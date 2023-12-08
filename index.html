@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Shooter</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- display score -->
+    <div class="score">
+      <span> Score = <span id="scoreEl">0</span></span>
+    </div>
+    <!-- game over UI -->
+    <div class="game_over" id="modalEl">
+      <label class="game_over--go">Game Over</label>
+      <h1 class="game_over--score" id="modalScoreEl">0</h1>
+      <p>Points</p>
+      <button id="buttonEl">Restart Game</button>
+    </div>
+
+    <!-- Start game -->
+    <div class="start_game" id="startModalEl">
+      <h1>Space Shooter</h1>
+      <button id="startButtonEl">Start</button>
+    </div>
+
+    <canvas></canvas>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
