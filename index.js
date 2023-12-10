@@ -24,6 +24,10 @@ let intervalId;
 let score = 0;
 let powerUps = [];
 let frames = 0;
+let backgroundParticles = [];
+let game = {
+  active: false,
+};
 
 function init() {
   player = new Player(x, y, 10, "white");
@@ -35,6 +39,26 @@ function init() {
   score = 0;
   scoreEl.innerHTML = 0;
   frames = 0;
+  backgroundParticles = [];
+  game = {
+    active: true,
+  };
+
+  const spacing = 30;
+
+  for (let x = 0; x < canvas.width + spacing; x += spacing) {
+    for (let y = 0; y < canvas.height + spacing; y += spacing) {
+      backgroundParticles.push(
+        new BackgroundParticle({
+          position: {
+            x,
+            y,
+          },
+          radius: 3,
+        })
+      );
+    }
+  }
 }
 
 function spawnEnemies() {
@@ -114,6 +138,27 @@ function animate() {
   c.fillStyle = "rgba(0, 0, 0, 0.1)";
   c.fillRect(0, 0, canvas.width, canvas.height);
   frames++;
+
+  backgroundParticles.forEach((backgroundParticle) => {
+    backgroundParticle.draw();
+
+    const dist = Math.hypot(
+      player.x - backgroundParticle.position.x,
+      player.y - backgroundParticle.position.y
+    );
+
+    if (dist < 100) {
+      backgroundParticle.alpha = 0;
+
+      if (dist > 70) {
+        backgroundParticle.alpha = 0.5;
+      }
+    } else if (dist > 100 && backgroundParticle.alpha < 0.1) {
+      backgroundParticle.alpha += 0.01;
+    } else if (dist > 100 && backgroundParticle.alpha > 0.1) {
+      backgroundParticle.alpha -= 0.01;
+    }
+  });
 
   player.update();
 
@@ -197,6 +242,9 @@ function animate() {
     if (dist - enemy.radius - player.radius < 1) {
       cancelAnimationFrame(animationId);
       clearInterval(intervalId);
+      audio.death.play();
+      game.active = false;
+
       modalEl.style.display = "block";
       modalScoreEl.innerHTML = score;
     }
@@ -228,6 +276,7 @@ function animate() {
         }
         // shrinking big enemies
         if (enemy.radius - 10 > 5) {
+          audio.damageTaken.play();
           score += 100;
           scoreEl.innerHTML = score;
 
@@ -255,6 +304,7 @@ function animate() {
           });
           projectiles.splice(projectilesIndex, 1);
         } else {
+          audio.explode.play();
           score += 150;
           scoreEl.innerHTML = score;
           //remove enemy if they are too small
@@ -266,6 +316,24 @@ function animate() {
             },
             score: 150,
           });
+
+          // change background particle colors
+          backgroundParticles.forEach((backgroundParticle) => {
+            // Set initial color and alpha
+            backgroundParticle.style.color = "white";
+            backgroundParticle.style.opacity = 1;
+
+            // Create a transition to the enemy color
+            backgroundParticle.style.transition = "color 1s, opacity 1s";
+            backgroundParticle.style.color = enemy.color;
+            backgroundParticle.style.opacity = 0.1;
+
+            // Reset the transition after it completes
+            setTimeout(() => {
+              backgroundParticle.style.transition = "";
+            }, 1000);
+          });
+
           projectiles.splice(projectilesIndex, 1);
         }
       }
@@ -274,12 +342,20 @@ function animate() {
 }
 
 addEventListener("click", (event) => {
-  const angle = Math.atan2(event.clientY - player.y, event.clientX - player.x);
-  const velocity = {
-    x: Math.cos(angle) * 5,
-    y: Math.sin(angle) * 5,
-  };
-  projectiles.push(new Projectile(player.x, player.y, 5, "white", velocity));
+  if (game.active) {
+    audio.shoot.play();
+
+    const angle = Math.atan2(
+      event.clientY - player.y,
+      event.clientX - player.x
+    );
+    const velocity = {
+      x: Math.cos(angle) * 5,
+      y: Math.sin(angle) * 5,
+    };
+
+    projectiles.push(new Projectile(player.x, player.y, 5, "white", velocity));
+  }
 });
 
 const mouse = {
@@ -294,6 +370,7 @@ addEventListener("mousemove", (event) => {
 });
 
 buttonEl.addEventListener("click", () => {
+  audio.select.play();
   init();
   animate();
   spawnEnemies();
@@ -302,6 +379,7 @@ buttonEl.addEventListener("click", () => {
 });
 
 startButtonEl.addEventListener("click", () => {
+  audio.select.play();
   init();
   animate();
   spawnEnemies();
