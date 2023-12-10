@@ -76,6 +76,39 @@ function spawnPowerUps() {
   }, 10000);
 }
 
+function createScoreLabel({ position, score }) {
+  const scoreLabel = document.createElement("label");
+  scoreLabel.innerHTML = score;
+  scoreLabel.style.color = "white";
+  scoreLabel.style.position = "absolute";
+  scoreLabel.style.left = position.x + "px";
+  scoreLabel.style.top = position.y + "px";
+  scoreLabel.style.userSelect = "none";
+  document.body.appendChild(scoreLabel);
+
+  let start = null;
+  const duration = 750; // duration in milliseconds
+  const endOpacity = 0;
+  const moveY = -30;
+
+  function step(timestamp) {
+    if (!start) start = timestamp;
+    const progress = timestamp - start;
+    const easing = progress / duration; // linear easing
+
+    scoreLabel.style.opacity = 1 - easing * (1 - endOpacity);
+    scoreLabel.style.top = `${position.y + easing * moveY}px`;
+
+    if (progress < duration) {
+      window.requestAnimationFrame(step);
+    } else {
+      scoreLabel.parentNode.removeChild(scoreLabel);
+    }
+  }
+
+  window.requestAnimationFrame(step);
+}
+
 function animate() {
   animationId = requestAnimationFrame(animate);
   c.fillStyle = "rgba(0, 0, 0, 0.1)";
@@ -109,8 +142,6 @@ function animate() {
       }, 5000);
     }
   }
-
-  console.log(powerUps);
 
   // machine gun animation / implementation
   if (player.powerUp === "MachineGun") {
@@ -215,13 +246,26 @@ function animate() {
           };
 
           shrinkAnim.play();
-
+          createScoreLabel({
+            position: {
+              x: projectile.x,
+              y: projectile.y,
+            },
+            score: 100,
+          });
           projectiles.splice(projectilesIndex, 1);
         } else {
           score += 150;
           scoreEl.innerHTML = score;
           //remove enemy if they are too small
           enemies.splice(index, 1);
+          createScoreLabel({
+            position: {
+              x: projectile.x,
+              y: projectile.y,
+            },
+            score: 150,
+          });
           projectiles.splice(projectilesIndex, 1);
         }
       }
