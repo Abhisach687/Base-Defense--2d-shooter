@@ -84,3 +84,25 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.sound {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px;
+}
+
+#volumeUpEl {
+  color: white;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+#volumeOffEl {
+  color: white;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: none;
+}

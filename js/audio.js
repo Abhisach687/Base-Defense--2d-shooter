@@ -5,6 +5,7 @@ const audio = {
   death: new Audio("./audio/Death.wav"),
   powerUpNoise: new Audio("./audio/Powerup_noise.wav"),
   select: new Audio("./audio/Select.wav"),
+  background: new Audio("./audio/Hyper.wav"),
 };
 
 // Set volume
@@ -14,3 +15,4 @@ audio.explode.volume = 0.1;
 audio.death.volume = 0.1;
 audio.powerUpNoise.volume = 0.1;
 audio.select.volume = 0.1;
+audio.background.volume = 0.1;

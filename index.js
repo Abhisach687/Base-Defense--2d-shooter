@@ -7,6 +7,8 @@ const modalScoreEl = document.querySelector("#modalScoreEl");
 const buttonEl = document.querySelector("#buttonEl");
 const startButtonEl = document.querySelector("#startButtonEl");
 const startModalEl = document.querySelector("#startModalEl");
+const volumeUpEl = document.querySelector("#volumeUpEl");
+const volumeOffEl = document.querySelector("#volumeOffEl");
 
 // set the canvas size to the window size
 canvas.width = innerWidth;
@@ -341,7 +343,13 @@ function animate() {
   }
 }
 
-addEventListener("click", (event) => {
+let audioInitialized = false;
+window.addEventListener("click", (event) => {
+  if (audio.background.paused) {
+    audio.background.play();
+    audioInitialized = true;
+  }
+
   if (game.active) {
     audio.shoot.play();
 
@@ -385,6 +393,27 @@ startButtonEl.addEventListener("click", () => {
   spawnEnemies();
   spawnPowerUps();
   startModalEl.style.display = "none";
+});
+
+// mute everything
+volumeUpEl.addEventListener("click", () => {
+  audio.background.pause();
+  volumeOffEl.style.display = "block";
+  volumeUpEl.style.display = "none";
+
+  for (let key in audio) {
+    audio[key].muted = true;
+  }
+});
+
+// unmute everything
+volumeOffEl.addEventListener("click", () => {
+  if (audioInitialized) audio.background.play();
+  volumeOffEl.style.display = "none";
+  volumeUpEl.style.display = "block";
+  for (let key in audio) {
+    audio[key].muted = false;
+  }
 });
 
 window.addEventListener("keydown", (event) => {
