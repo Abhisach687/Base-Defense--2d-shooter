@@ -319,23 +319,16 @@ function animate() {
             },
             score: 150,
           });
+          // // change background particle colors
+          // backgroundParticles.forEach((backgroundParticle) => {
+          //   backgroundParticle.color = "white";
+          //   backgroundParticle.alpha = 1;
 
-          // change background particle colors
-          backgroundParticles.forEach((backgroundParticle) => {
-            // Set initial color and alpha
-            backgroundParticle.style.color = "white";
-            backgroundParticle.style.opacity = 1;
-
-            // Create a transition to the enemy color
-            backgroundParticle.style.transition = "color 1s, opacity 1s";
-            backgroundParticle.style.color = enemy.color;
-            backgroundParticle.style.opacity = 0.1;
-
-            // Reset the transition after it completes
-            setTimeout(() => {
-              backgroundParticle.style.transition = "";
-            }, 1000);
-          });
+          //   setTimeout(() => {
+          //     backgroundParticle.color = enemy.color;
+          //     backgroundParticle.alpha = 0.1;
+          //   }, 8888);
+          // });
 
           projectiles.splice(projectilesIndex, 1);
         }
