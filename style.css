@@ -6,6 +6,14 @@ body {
   overflow-x: hidden;
 }
 
+.lives {
+  position: absolute;
+  top: 8px;
+  left: 90px;
+  color: white;
+  font-size: 14px;
+}
+
 .score {
   position: absolute;
   color: white;

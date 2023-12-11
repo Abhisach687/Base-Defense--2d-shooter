@@ -1,4 +1,3 @@
-// get the canvas and context objects
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 const scoreEl = document.querySelector("#scoreEl");
@@ -9,6 +8,7 @@ const startButtonEl = document.querySelector("#startButtonEl");
 const startModalEl = document.querySelector("#startModalEl");
 const volumeUpEl = document.querySelector("#volumeUpEl");
 const volumeOffEl = document.querySelector("#volumeOffEl");
+const livesEl = document.querySelector("#livesEl");
 
 // set the canvas size to the window size
 canvas.width = innerWidth;
@@ -18,6 +18,7 @@ const x = canvas.width / 2;
 const y = canvas.height / 2;
 
 let player = new Player(x, y, 10, "white");
+lives = 1;
 let projectiles = [];
 let enemies = [];
 let particles = [];
@@ -45,6 +46,9 @@ function init() {
   game = {
     active: true,
   };
+
+  lives = 1;
+  livesEl.innerHTML = lives;
 
   const spacing = 30;
 
@@ -187,6 +191,9 @@ function animate() {
         player.powerUp = null;
         player.color = "white";
       }, 5000);
+
+      lives++;
+      livesEl.innerHTML = lives; // Update the lives element with the new value
     }
   }
 
@@ -241,15 +248,31 @@ function animate() {
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
 
     //end game
-    if (dist - enemy.radius - player.radius < 1) {
-      cancelAnimationFrame(animationId);
-      clearInterval(intervalId);
-      clearInterval(spawnPowerUpsId);
+    if (dist - enemy.radius - player.radius < 1 && player.canTakeDamage) {
+      lives--;
+      livesEl.innerHTML = lives;
+      // Play death sound
       audio.death.play();
-      game.active = false;
+      player.x = canvas.width / 2;
+      player.y = canvas.height / 2;
+      // Reset player's velocity
+      player.velocity = { x: 0, y: 0 };
+      player.canTakeDamage = false;
+      setTimeout(() => {
+        player.canTakeDamage = true; // player can take damage after 1 second
+      }, 1000);
 
-      modalEl.style.display = "block";
-      modalScoreEl.innerHTML = score;
+      if (lives <= 0) {
+        cancelAnimationFrame(animationId);
+        clearInterval(intervalId);
+        clearInterval(spawnPowerUpsId);
+        game.active = false;
+        // Play death sound
+        audio.death.play();
+
+        modalEl.style.display = "block";
+        modalScoreEl.innerHTML = score;
+      }
     }
 
     for (
