@@ -9,7 +9,7 @@ body {
 .lives {
   position: absolute;
   top: 8px;
-  left: 90px;
+  left: 128px;
   color: white;
   font-size: 14px;
 }

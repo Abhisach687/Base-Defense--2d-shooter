@@ -140,6 +140,11 @@ function createScoreLabel({ position, score }) {
 }
 
 function animate() {
+  if (!game.active) {
+    // If the game is not active, just request the next frame and return
+    requestAnimationFrame(animate);
+    return;
+  }
   animationId = requestAnimationFrame(animate);
   c.fillStyle = "rgba(0, 0, 0, 0.1)";
   c.fillRect(0, 0, canvas.width, canvas.height);
@@ -253,6 +258,14 @@ function animate() {
       livesEl.innerHTML = lives;
       // Play death sound
       audio.death.play();
+
+      //pause the game for 2 seconds
+      game.active = false;
+      setTimeout(() => {
+        game.active = true;
+      }, 2000);
+
+      // Reset player's position
       player.x = canvas.width / 2;
       player.y = canvas.height / 2;
       // Reset player's velocity
@@ -261,6 +274,7 @@ function animate() {
       setTimeout(() => {
         player.canTakeDamage = true; // player can take damage after 1 second
       }, 1000);
+      enemies = [];
 
       if (lives <= 0) {
         cancelAnimationFrame(animationId);
