@@ -463,15 +463,19 @@ document.addEventListener("visibilitychange", () => {
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "ArrowRight":
+    case "d":
       player.velocity.x += 1;
       break;
     case "ArrowUp":
+    case "w":
       player.velocity.y -= 1;
       break;
     case "ArrowLeft":
+    case "a":
       player.velocity.x -= 1;
       break;
     case "ArrowDown":
+    case "s":
       player.velocity.y += 1;
       break;
   }
