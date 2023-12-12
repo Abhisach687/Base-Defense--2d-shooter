@@ -31,6 +31,7 @@ let backgroundParticles = [];
 let game = {
   active: false,
 };
+let rocks = [];
 
 function init() {
   player = new Player(x, y, 10, "white");
@@ -64,6 +65,14 @@ function init() {
         })
       );
     }
+  }
+
+  for (let i = 0; i < 10; i++) {
+    const radius = Math.random() * (30 - 10) + 10;
+    const x = Math.random() * (canvas.width - radius * 2) + radius;
+    const y = Math.random() * (canvas.height - radius * 2) + radius;
+    const color = "DimGray";
+    rocks.push(new Rock(x, y, radius, color));
   }
 }
 
@@ -370,6 +379,60 @@ function animate() {
           projectiles.splice(projectilesIndex, 1);
         }
       }
+    }
+  }
+
+  for (let i = rocks.length - 1; i >= 0; i--) {
+    const rock = rocks[i];
+
+    rock.update();
+
+    for (let j = projectiles.length - 1; j >= 0; j--) {
+      const projectile = projectiles[j];
+
+      const distance = Math.hypot(projectile.x - rock.x, projectile.y - rock.y);
+
+      if (distance - rock.radius - projectile.radius < 1) {
+        rock.hit();
+        projectiles.splice(j, 1);
+      }
+
+      if (rock.hits >= 3) {
+        rocks.splice(i, 1);
+      }
+    }
+  }
+
+  for (let i = rocks.length - 1; i >= 0; i--) {
+    const rock = rocks[i];
+
+    rock.update();
+
+    for (let j = projectiles.length - 1; j >= 0; j--) {
+      const projectile = projectiles[j];
+
+      const distance = Math.hypot(projectile.x - rock.x, projectile.y - rock.y);
+
+      if (distance - rock.radius - projectile.radius < 1) {
+        rock.hit();
+        projectiles.splice(j, 1);
+      }
+
+      if (rock.hits >= 3) {
+        rocks.splice(i, 1);
+      }
+    }
+  }
+
+  // Check for player-rock collisions
+  for (let i = 0; i < rocks.length; i++) {
+    const rock = rocks[i];
+    const distance = Math.hypot(player.x - rock.x, player.y - rock.y);
+    if (distance < player.radius + rock.radius) {
+      // Adjust player's path to avoid the rock
+      const angle = Math.atan2(player.y - rock.y, player.x - rock.x);
+      player.x = rock.x + (player.radius + rock.radius) * Math.cos(angle);
+      player.y = rock.y + (player.radius + rock.radius) * Math.sin(angle);
     }
   }
 }
