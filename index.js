@@ -91,7 +91,12 @@ function spawnEnemies() {
 
     const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
     const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
-    const speedMultiplier = 1 + level * 0.8; // Increase speed by 80% each level
+    let speedMultiplier = 1;
+    if (level === 1) {
+      speedMultiplier = 1;
+    } else {
+      speedMultiplier = 1 + level * 0.8;
+    }
     const velocity = {
       x: Math.cos(angle) * speedMultiplier,
       y: Math.sin(angle) * speedMultiplier,
@@ -439,7 +444,7 @@ function animate() {
   }
 
   // Check if the player has reached the next level
-  if ((level === 1 && score >= 400) || (level === 2 && score >= 1200)) {
+  if ((level === 1 && score >= 40000) || (level === 2 && score >= 120000)) {
     level++;
     lives++;
     livesEl.innerHTML = lives;
