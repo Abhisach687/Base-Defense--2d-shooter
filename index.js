@@ -52,6 +52,7 @@ function init() {
   lives = 1;
   livesEl.innerHTML = lives;
   rocks = [];
+  level = 1;
 
   const spacing = 30;
 
@@ -95,8 +96,8 @@ function spawnEnemies() {
     let speedMultiplier = 1;
     if (level === 1) {
       speedMultiplier = 1;
-    } else {
-      speedMultiplier = 1 + level * 0.8;
+    } else if (level === 2 || level === 3) {
+      speedMultiplier = level * 0.8;
     }
     const velocity = {
       x: Math.cos(angle) * speedMultiplier,
