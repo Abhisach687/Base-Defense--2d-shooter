@@ -604,4 +604,4 @@ function handleDeviceMotion(event) {
 }
 
 // Add event listener for device motion
-window.addEventListener("dragMove", handleDeviceMotion);
+window.addEventListener("devicemotion", handleDeviceMotion);
