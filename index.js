@@ -51,6 +51,7 @@ function init() {
 
   lives = 1;
   livesEl.innerHTML = lives;
+  rocks = [];
 
   const spacing = 30;
 
