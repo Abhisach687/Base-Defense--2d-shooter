@@ -585,29 +585,22 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-// code for mobile device movement
-function handleDeviceMotion(event) {
-  // Get the acceleration values
-  const accelerationX = event.accelerationIncludingGravity.x;
-  const accelerationY = event.accelerationIncludingGravity.y;
+//implement the logic to move the player on mobile devices using the touch events
+window.addEventListener("touchstart", (event) => {
+  const touchX = event.touches[0].clientX;
+  const touchY = event.touches[0].clientY;
+  player.velocity.x = (touchX - canvas.width / 2) / 30;
+  player.velocity.y = (touchY - canvas.height / 2) / 30;
+});
 
-  // Calculate the drag distance based on the acceleration values
-  const dragDistanceX = accelerationX * 0.1;
-  const dragDistanceY = accelerationY * 0.1;
+window.addEventListener("touchmove", (event) => {
+  const touchX = event.touches[0].clientX;
+  const touchY = event.touches[0].clientY;
+  player.velocity.x = (touchX - canvas.width / 2) / 30;
+  player.velocity.y = (touchY - canvas.height / 2) / 30;
+});
 
-  // Calculate the new player position based on the drag distance
-  const playerX = player.x + dragDistanceX;
-  const playerY = player.y + dragDistanceY;
-
-  // Update the player position
-  movePlayer(playerX, playerY);
-}
-
-// Add event listener for device motion
-window.addEventListener("devicemotion", handleDeviceMotion);
-
-function movePlayer(x, y) {
-  // Update the player's position
-  player.x = x;
-  player.y = y;
-}
+window.addEventListener("touchend", () => {
+  player.velocity.x = 0;
+  player.velocity.y = 0;
+});
