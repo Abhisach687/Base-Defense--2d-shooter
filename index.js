@@ -605,3 +605,9 @@ function handleDeviceMotion(event) {
 
 // Add event listener for device motion
 window.addEventListener("devicemotion", handleDeviceMotion);
+
+function movePlayer(x, y) {
+  // Update the player's position
+  player.x = x;
+  player.y = y;
+}
