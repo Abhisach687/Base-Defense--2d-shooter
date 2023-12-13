@@ -32,6 +32,7 @@ let game = {
   active: false,
 };
 let rocks = [];
+let level = 1;
 
 function init() {
   player = new Player(x, y, 10, "white");
@@ -90,9 +91,10 @@ function spawnEnemies() {
 
     const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
     const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
+    const speedMultiplier = 1 + level * 0.8; // Increase speed by 80% each level
     const velocity = {
-      x: Math.cos(angle),
-      y: Math.sin(angle),
+      x: Math.cos(angle) * speedMultiplier,
+      y: Math.sin(angle) * speedMultiplier,
     };
     enemies.push(new Enemy(x, y, radius, color, velocity));
   }, 1000);
@@ -434,6 +436,38 @@ function animate() {
       player.x = rock.x + (player.radius + rock.radius) * Math.cos(angle);
       player.y = rock.y + (player.radius + rock.radius) * Math.sin(angle);
     }
+  }
+
+  // Check if the player has reached the next level
+  if ((level === 1 && score >= 400) || (level === 2 && score >= 1200)) {
+    level++;
+    lives++;
+    livesEl.innerHTML = lives;
+
+    enemies = []; // Remove all enemies
+    player.x = canvas.width / 2; // Reset player's position
+    player.y = canvas.height / 2; // Reset player's position
+
+    // Redraw rocks
+    rocks = [];
+    for (let i = 0; i < 10; i++) {
+      const radius = Math.random() * (30 - 10) + 10;
+      const x = Math.random() * (canvas.width - radius * 2) + radius;
+      const y = Math.random() * (canvas.height - radius * 2) + radius;
+      const color = "DimGray";
+      rocks.push(new Rock(x, y, radius, color));
+    }
+
+    // Show level up modal
+    const levelModalEl = document.querySelector("#levelModalEl");
+    levelModalEl.style.display = "block";
+    const currentLevelEl = document.querySelector("#currentLevelEl");
+    currentLevelEl.innerHTML = level;
+
+    // Hide level up modal after 2 seconds
+    setTimeout(() => {
+      levelModalEl.style.display = "none";
+    }, 2000);
   }
 }
 
