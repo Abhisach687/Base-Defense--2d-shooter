@@ -593,25 +593,41 @@ window.addEventListener("touchstart", (event) => {
   touchStartY = event.touches[0].clientY;
 });
 
-window.addEventListener("touchmove", (event) => {
-  const touchEndX = event.touches[0].clientX;
-  const touchEndY = event.touches[0].clientY;
+window.addEventListener(
+  "touchmove",
+  (event) => {
+    event.preventDefault();
+    const touchEndX = event.touches[0].clientX;
+    const touchEndY = event.touches[0].clientY;
 
-  const swipeX = touchEndX - touchStartX;
-  const swipeY = touchEndY - touchStartY;
+    const swipeX = touchEndX - touchStartX;
+    const swipeY = touchEndY - touchStartY;
 
-  if (Math.abs(swipeX) > Math.abs(swipeY)) {
-    // Horizontal swipe
-    player.velocity.x = swipeX / 30;
-    player.velocity.y = 0;
-  } else {
-    // Vertical swipe
-    player.velocity.x = 0;
-    player.velocity.y = swipeY / 30;
-  }
-});
+    if (Math.abs(swipeX) > Math.abs(swipeY)) {
+      // Horizontal swipe
+      player.velocity.x = swipeX / 30;
+      player.velocity.y = 0;
+    } else {
+      // Vertical swipe
+      player.velocity.x = 0;
+      player.velocity.y = swipeY / 30;
+    }
+  },
+  { passive: false }
+);
 
 window.addEventListener("touchend", () => {
   player.velocity.x = 0;
   player.velocity.y = 0;
 });
+
+// to prevent scrolling on mobile devices when swiping on the canvas
+window.addEventListener("resize", resizeCanvas, false);
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+// Initial resize
+resizeCanvas();
