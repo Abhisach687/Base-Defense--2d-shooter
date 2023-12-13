@@ -215,7 +215,11 @@ function animate() {
         player.color = "white";
       }, 5000);
 
-      lives++;
+      if (lives < 5) {
+        //only increase lives if lives is less than 5
+        lives++;
+      }
+
       livesEl.innerHTML = lives; // Update the lives element with the new value
     }
   }
@@ -448,7 +452,10 @@ function animate() {
   // Check if the player has reached the next level
   if ((level === 1 && score >= 40000) || (level === 2 && score >= 120000)) {
     level++;
-    lives++;
+    if (lives < 5) {
+      // Only increase lives if lives is less than 5
+      lives++;
+    }
     livesEl.innerHTML = lives;
 
     enemies = []; // Remove all enemies

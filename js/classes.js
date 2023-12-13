@@ -4,7 +4,6 @@ class Player {
     this.y = y;
     this.radius = radius;
     this.color = color;
-    this.lives = 3;
     this.canTakeDamage = true;
     this.velocity = {
       x: 0,
