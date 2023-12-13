@@ -22,7 +22,7 @@ class Player {
   update() {
     this.draw();
 
-    const friction = 0.88;
+    const friction = 0.99;
 
     this.velocity.x *= friction;
     this.velocity.y *= friction;
