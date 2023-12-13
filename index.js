@@ -584,3 +584,45 @@ window.addEventListener("keydown", (event) => {
       break;
   }
 });
+
+// Add event listeners for touch events
+window.addEventListener("touchstart", handleTouch, false);
+window.addEventListener("touchmove", handleTouch, false);
+
+function handleTouch(e) {
+  // Prevent the default scrolling behavior
+  e.preventDefault();
+
+  // Get the touch coordinates
+  const touch = e.touches[0];
+
+  // Calculate the new player position. Here we're simply setting the player position to the touch position
+  const playerX = touch.clientX;
+  const playerY = touch.clientY;
+
+  // Update the player position
+  movePlayer(playerX, playerY);
+}
+
+function movePlayer(x, y) {
+  // Update the player's position
+  player.x = x;
+  player.y = y;
+}
+
+// Additional code for mobile device movement
+function handleDeviceMotion(event) {
+  // Get the acceleration values
+  const accelerationX = event.accelerationIncludingGravity.x;
+  const accelerationY = event.accelerationIncludingGravity.y;
+
+  // Calculate the new player position based on the acceleration values
+  const playerX = player.x + accelerationX;
+  const playerY = player.y + accelerationY;
+
+  // Update the player position
+  movePlayer(playerX, playerY);
+}
+
+// Add event listener for device motion
+window.addEventListener("devicemotion", handleDeviceMotion);
