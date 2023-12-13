@@ -585,19 +585,30 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-//implement the logic to move the player on mobile devices using the touch events
+let touchStartX = 0;
+let touchStartY = 0;
+
 window.addEventListener("touchstart", (event) => {
-  const touchX = event.touches[0].clientX;
-  const touchY = event.touches[0].clientY;
-  player.velocity.x = (touchX - canvas.width / 2) / 30;
-  player.velocity.y = (touchY - canvas.height / 2) / 30;
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
 });
 
 window.addEventListener("touchmove", (event) => {
-  const touchX = event.touches[0].clientX;
-  const touchY = event.touches[0].clientY;
-  player.velocity.x = (touchX - canvas.width / 2) / 30;
-  player.velocity.y = (touchY - canvas.height / 2) / 30;
+  const touchEndX = event.touches[0].clientX;
+  const touchEndY = event.touches[0].clientY;
+
+  const swipeX = touchEndX - touchStartX;
+  const swipeY = touchEndY - touchStartY;
+
+  if (Math.abs(swipeX) > Math.abs(swipeY)) {
+    // Horizontal swipe
+    player.velocity.x = swipeX / 30;
+    player.velocity.y = 0;
+  } else {
+    // Vertical swipe
+    player.velocity.x = 0;
+    player.velocity.y = swipeY / 30;
+  }
 });
 
 window.addEventListener("touchend", () => {
