@@ -9,13 +9,18 @@ class Player {
       x: 0,
       y: 0,
     };
+    this.image = new Image();
+    this.image.src = "img/player.png";
   }
 
   draw() {
-    c.beginPath();
-    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    c.fillStyle = this.color;
-    c.fill();
+    c.drawImage(
+      this.image,
+      this.x - this.radius,
+      this.y - this.radius,
+      this.radius * 4,
+      this.radius * 4
+    );
   }
 
   update() {
