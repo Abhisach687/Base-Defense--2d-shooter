@@ -363,6 +363,24 @@ window.addEventListener("click", (event) => {
   }
 });
 
+//shoot with spacebar
+window.addEventListener("keydown", (event) => {
+  if (event.code === "Space") {
+    audio.shoot.play();
+
+    const angle = Math.atan2(
+      mouse.position.y - player.y,
+      mouse.position.x - player.x
+    );
+    const velocity = {
+      x: Math.cos(angle) * 5,
+      y: Math.sin(angle) * 5,
+    };
+
+    projectiles.push(new Projectile(player.x, player.y, 5, "white", velocity));
+  }
+});
+
 const mouse = {
   position: {
     x: 0,
