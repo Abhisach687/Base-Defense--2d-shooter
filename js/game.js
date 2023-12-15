@@ -6,7 +6,7 @@ const x = canvas.width / 2;
 const y = canvas.height / 2;
 
 let player = new Player(x, y, 10, "white");
-lives = 1;
+let lives = 1;
 let projectiles = [];
 let enemies = [];
 let particles = [];
