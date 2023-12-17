@@ -41,10 +41,6 @@ class Enemy {
   }
 
   update() {
-    if (this.radius > 0) {
-      this.draw();
-    }
-
     if (this.type === "Spinning") {
       this.radians += 0.1;
 
@@ -54,6 +50,10 @@ class Enemy {
       this.x = this.center.x + Math.cos(this.radians) * 30;
       this.y = this.center.y + Math.sin(this.radians) * 30;
     } else if (this.type === "Homing") {
+      const angle = Math.atan2(player.y - this.y, player.x - this.x);
+      this.velocity.x = Math.cos(angle);
+      this.velocity.y = Math.sin(angle);
+
       this.x = this.x + this.velocity.x;
       this.y = this.y + this.velocity.y;
     } else if (this.type === "Homing Spinning") {
