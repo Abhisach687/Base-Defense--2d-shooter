@@ -27,3 +27,6 @@ audio.death.volume = 0.1;
 audio.powerUpNoise.volume = 0.1;
 audio.select.volume = 0.1;
 audio.background.volume = 0.1;
+
+// Set loop
+audio.background.loop = true;
