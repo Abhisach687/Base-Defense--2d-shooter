@@ -264,6 +264,7 @@ function animate() {
           scoreEl.innerHTML = score;
           // Remove enemy if they are too small
           enemies.splice(index, 1);
+          document.body.removeChild(enemy.element);
           createScoreLabel({
             position: {
               x: projectile.x,
