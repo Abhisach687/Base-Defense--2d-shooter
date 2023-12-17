@@ -41,6 +41,8 @@ class Enemy {
   }
 
   update() {
+    this.draw();
+
     if (this.type === "Spinning") {
       this.radians += 0.1;
 
