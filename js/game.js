@@ -7,12 +7,11 @@
  * Rocks serve as obstacles and can be destroyed by projectiles.
  * The game keeps track of lives, score, and level.
  * It also includes audio elements for background music, shooting sounds, and death sounds.
- * The game is controlled by mouse movement, mouse click, and spacebar key press events.
+ * The game is controlled by mouse movement, mouse click, arrow keys, asdf keys and spacebar key press events.
  * It also includes buttons for starting and restarting the game, as well as volume control.
  * JSDoc comments have been added to explain the purpose and functionality of each section of the code.
  */
 
-// FILEPATH: /c:/Users/abhis/OneDrive/Desktop/Leapfrog/Base Defense (2d shooter)/js/game.js
 // set the canvas size to the window size
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -448,7 +447,7 @@ volumeOffEl.addEventListener("click", () => {
 
   volumeOffEl.style.display = "none";
   volumeUpEl.style.display = "block";
-}); // <-- Added closing parenthesis here
+});
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
