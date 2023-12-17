@@ -128,6 +128,10 @@ function animate() {
       projectiles.push(
         new Projectile(player.x, player.y, 5, "yellow", velocity)
       );
+
+    if (frames % 5 === 0) {
+      audio.shoot.play();
+    }
   }
 
   // Update and render particles
