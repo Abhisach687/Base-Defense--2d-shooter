@@ -6,7 +6,6 @@ function resizeCanvas() {
 
 /**
  * Creates a score label element and animates it.
- * @param {Object} options - The options for creating the score label.
  * @param {Object} options.position - The position of the score label.
  * @param {number} options.position.x - The x-coordinate of the score label.
  * @param {number} options.position.y - The y-coordinate of the score label.
