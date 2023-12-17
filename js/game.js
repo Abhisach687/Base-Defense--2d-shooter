@@ -9,7 +9,6 @@
  * It also includes audio elements for background music, shooting sounds, and death sounds.
  * The game is controlled by mouse movement, mouse click, arrow keys, asdf keys and spacebar key press events.
  * It also includes buttons for starting and restarting the game, as well as volume control.
- * JSDoc comments have been added to explain the purpose and functionality of each section of the code.
  */
 
 // set the canvas size to the window size
