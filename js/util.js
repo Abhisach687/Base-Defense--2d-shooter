@@ -1,3 +1,4 @@
+//for mobile devices to work properly with the game
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -11,6 +12,8 @@ function resizeCanvas() {
  * @param {number} options.position.y - The y-coordinate of the score label.
  * @param {number} options.score - The score to be displayed in the label.
  */
+
+//creating score label
 function createScoreLabel({ position, score }) {
   const scoreLabel = document.createElement("label");
   scoreLabel.innerHTML = score;
@@ -44,6 +47,7 @@ function createScoreLabel({ position, score }) {
   window.requestAnimationFrame(step);
 }
 
+//spawning enemies
 function spawnEnemies() {
   intervalId = setInterval(() => {
     const radius = Math.random() * (30 - 4) + 4;
@@ -72,6 +76,7 @@ function spawnEnemies() {
   }, 1000);
 }
 
+//spawning powerups
 function spawnPowerUps() {
   spawnPowerUpsId = setInterval(() => {
     powerUps.push(
