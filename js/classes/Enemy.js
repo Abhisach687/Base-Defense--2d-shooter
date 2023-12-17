@@ -1,4 +1,19 @@
+/**
+ * Represents an enemy in the game.
+ * @class
+ */
 class Enemy {
+  /**
+   * Creates an instance of Enemy.
+   * @constructor
+   * @param {number} x - The x-coordinate of the enemy.
+   * @param {number} y - The y-coordinate of the enemy.
+   * @param {number} radius - The radius of the enemy.
+   * @param {string} color - The color of the enemy.
+   * @param {Object} velocity - The velocity of the enemy.
+   * @param {number} velocity.x - The x-component of the velocity.
+   * @param {number} velocity.y - The y-component of the velocity.
+   */
   constructor(x, y, radius, color, velocity) {
     this.x = x;
     this.y = y;
@@ -31,6 +46,9 @@ class Enemy {
     }
   }
 
+  /**
+   * Draws the enemy on the canvas.
+   */
   draw() {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -40,6 +58,9 @@ class Enemy {
     this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
   }
 
+  /**
+   * Updates the enemy's position and behavior.
+   */
   update() {
     this.draw();
 

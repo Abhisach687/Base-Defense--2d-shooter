@@ -1,10 +1,27 @@
+/**
+ * This file contains the game logic for the Base Defense 2D shooter game.
+ * It sets up the canvas size, initializes game variables, and defines functions for animation and event handling.
+ * The game involves a player, enemies, projectiles, power-ups, rocks, and particles.
+ * The player can move, shoot projectiles, and collect power-ups.
+ * The enemies move towards the player and can be destroyed by projectiles.
+ * Rocks serve as obstacles and can be destroyed by projectiles.
+ * The game keeps track of lives, score, and level.
+ * It also includes audio elements for background music, shooting sounds, and death sounds.
+ * The game is controlled by mouse movement, mouse click, and spacebar key press events.
+ * It also includes buttons for starting and restarting the game, as well as volume control.
+ * JSDoc comments have been added to explain the purpose and functionality of each section of the code.
+ */
+
+// FILEPATH: /c:/Users/abhis/OneDrive/Desktop/Leapfrog/Base Defense (2d shooter)/js/game.js
 // set the canvas size to the window size
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
+// Define initial player position
 const x = canvas.width / 2;
 const y = canvas.height / 2;
 
+// Initialize game variables
 let player = new Player(x, y, 10, "white");
 let lives = 1;
 let projectiles = [];
@@ -22,6 +39,11 @@ let game = {
 let rocks = [];
 let level = 1;
 
+/**
+ * The animate function is responsible for updating and rendering the game elements on each frame.
+ * It uses requestAnimationFrame to continuously call itself for smooth animation.
+ * It handles player movement, power-up collection, enemy and projectile updates, collision detection, and level progression.
+ */
 function animate() {
   if (!game.active) {
     // If the game is not active, just request the next frame and return
@@ -33,6 +55,7 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   frames++;
 
+  // Update and render background particles
   backgroundParticles.forEach((backgroundParticle) => {
     backgroundParticle.draw();
 
@@ -41,6 +64,7 @@ function animate() {
       player.y - backgroundParticle.position.y
     );
 
+    // Adjust background particle alpha based on player distance
     if (dist < 100) {
       backgroundParticle.alpha = 0;
 
@@ -54,8 +78,10 @@ function animate() {
     }
   });
 
+  // Update and render player
   player.update();
 
+  // Update and render power-ups
   for (let i = powerUps.length - 1; i >= 0; i--) {
     const powerUp = powerUps[i];
 
@@ -68,20 +94,20 @@ function animate() {
       player.y - powerUp.position.y
     );
 
-    // gain power up
+    // Collect power-up
     if (dist < powerUp.image.height / 2 + player.radius) {
       powerUps.splice(i, 1);
       player.powerUp = "MachineGun";
       player.color = "yellow";
 
-      // power up runs out
+      // Power-up duration
       setTimeout(() => {
         player.powerUp = null;
         player.color = "white";
       }, 5000);
 
       if (lives < 5) {
-        //only increase lives if lives is less than 5
+        // Only increase lives if lives is less than 5
         lives++;
       }
 
@@ -89,7 +115,7 @@ function animate() {
     }
   }
 
-  // machine gun animation / implementation
+  // Machine gun animation / implementation
   if (player.powerUp === "MachineGun") {
     const angle = Math.atan2(
       mouse.position.y - player.y,
@@ -106,6 +132,7 @@ function animate() {
       );
   }
 
+  // Update and render particles
   for (let index = particles.length - 1; index >= 0; index--) {
     const particle = particles[index];
     if (particle.alpha < 0) {
@@ -116,12 +143,13 @@ function animate() {
     particle.update();
   }
 
+  // Update and render projectiles
   for (let index = projectiles.length - 1; index >= 0; index--) {
     const projectile = projectiles[index];
 
     projectile.update();
 
-    //remove projectiles from edges of the screen
+    // Remove projectiles from edges of the screen
     if (
       projectile.x + projectile.radius < 0 ||
       projectile.x - projectile.radius > canvas.width ||
@@ -132,6 +160,7 @@ function animate() {
     }
   }
 
+  // Update and render enemies
   for (let index = enemies.length - 1; index >= 0; index--) {
     const enemy = enemies[index];
 
@@ -139,14 +168,14 @@ function animate() {
 
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
 
-    //end game
+    // End game if player collides with enemy
     if (dist - enemy.radius - player.radius < 1 && player.canTakeDamage) {
       lives--;
       livesEl.innerHTML = lives;
       // Play death sound
       audio.death.play();
 
-      //pause the game for 2 seconds
+      // Pause the game for 2 seconds
       game.active = false;
       setTimeout(() => {
         game.active = true;
@@ -159,7 +188,7 @@ function animate() {
       player.velocity = { x: 0, y: 0 };
       player.canTakeDamage = false;
       setTimeout(() => {
-        player.canTakeDamage = true; // player can take damage after 1 second
+        player.canTakeDamage = true; // Player can take damage after 1 second
       }, 1000);
       enemies = [];
 
@@ -176,6 +205,7 @@ function animate() {
       }
     }
 
+    // Check for projectile-enemy collisions
     for (
       let projectilesIndex = projectiles.length - 1;
       projectilesIndex >= 0;
@@ -184,9 +214,9 @@ function animate() {
       const projectile = projectiles[projectilesIndex];
       const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
 
-      //projectile enemy collision
+      // Projectile-enemy collision
       if (dist - enemy.radius - projectile.radius < 1) {
-        //create ka-boom
+        // Create particles for explosion effect
         for (let index = 0; index < enemy.radius * 2; index++) {
           particles.push(
             new Particle(
@@ -201,14 +231,13 @@ function animate() {
             )
           );
         }
-        // shrinking big enemies
+        // Shrink big enemies or remove small enemies
         if (enemy.radius - 10 > 5) {
           audio.damageTaken.play();
           score += 100;
           scoreEl.innerHTML = score;
 
-          //reduce enemy size on hit animation smooth
-
+          // Reduce enemy size on hit animation
           const shrinkAnim = enemy.element.animate(
             [
               { borderRadius: `${enemy.radius}px` },
@@ -234,7 +263,7 @@ function animate() {
           audio.explode.play();
           score += 150;
           scoreEl.innerHTML = score;
-          //remove enemy if they are too small
+          // Remove enemy if they are too small
           enemies.splice(index, 1);
           createScoreLabel({
             position: {
@@ -250,27 +279,7 @@ function animate() {
     }
   }
 
-  for (let i = rocks.length - 1; i >= 0; i--) {
-    const rock = rocks[i];
-
-    rock.update();
-
-    for (let j = projectiles.length - 1; j >= 0; j--) {
-      const projectile = projectiles[j];
-
-      const distance = Math.hypot(projectile.x - rock.x, projectile.y - rock.y);
-
-      if (distance - rock.radius - projectile.radius < 1) {
-        rock.hit();
-        projectiles.splice(j, 1);
-      }
-
-      if (rock.hits >= 3) {
-        rocks.splice(i, 1);
-      }
-    }
-  }
-
+  // Update and render rocks
   for (let i = rocks.length - 1; i >= 0; i--) {
     const rock = rocks[i];
 
@@ -340,7 +349,10 @@ function animate() {
   }
 }
 
+// Initialize audio flag
 let audioInitialized = false;
+
+// Event listener for mouse click
 window.addEventListener("click", (event) => {
   if (audio.background.paused) {
     audio.background.play();
@@ -363,7 +375,7 @@ window.addEventListener("click", (event) => {
   }
 });
 
-//shoot with spacebar
+// Event listener for spacebar key press
 window.addEventListener("keydown", (event) => {
   if (event.code === "Space") {
     audio.shoot.play();
@@ -381,6 +393,7 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+// Event listener for mouse movement
 const mouse = {
   position: {
     x: 0,
@@ -392,6 +405,7 @@ addEventListener("mousemove", (event) => {
   mouse.position.y = event.clientY;
 });
 
+// Event listener for start button click
 buttonEl.addEventListener("click", () => {
   audio.select.play();
   init();
@@ -401,6 +415,7 @@ buttonEl.addEventListener("click", () => {
   modalEl.style.display = "none";
 });
 
+// Event listener for start button click
 startButtonEl.addEventListener("click", () => {
   audio.select.play();
   init();
@@ -410,26 +425,30 @@ startButtonEl.addEventListener("click", () => {
   startModalEl.style.display = "none";
 });
 
-// mute everything
+// Event listener for volume up button click
 volumeUpEl.addEventListener("click", () => {
   audio.background.pause();
   volumeOffEl.style.display = "block";
   volumeUpEl.style.display = "none";
 
+  // Mute all audio elements
   for (let key in audio) {
     audio[key].muted = true;
   }
 });
 
-// unmute everything
+// Event listener for volume off button click
 volumeOffEl.addEventListener("click", () => {
   if (audioInitialized) audio.background.play();
-  volumeOffEl.style.display = "none";
-  volumeUpEl.style.display = "block";
+
+  // Unmute all audio elements
   for (let key in audio) {
     audio[key].muted = false;
   }
-});
+
+  volumeOffEl.style.display = "none";
+  volumeUpEl.style.display = "block";
+}); // <-- Added closing parenthesis here
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {

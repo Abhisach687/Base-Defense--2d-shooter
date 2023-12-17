@@ -1,3 +1,14 @@
+/**
+ * Object representing various audio files used in the game.
+ * @type {Object}
+ * @property {Audio} shoot - Audio file for shooting sound.
+ * @property {Audio} damageTaken - Audio file for damage taken sound.
+ * @property {Audio} explode - Audio file for explosion sound.
+ * @property {Audio} death - Audio file for death sound.
+ * @property {Audio} powerUpNoise - Audio file for power-up sound.
+ * @property {Audio} select - Audio file for selection sound.
+ * @property {Audio} background - Audio file for background music.
+ */
 const audio = {
   shoot: new Audio("./audio/Basic_shoot_noise.wav"),
   damageTaken: new Audio("./audio/Damage_taken.wav"),

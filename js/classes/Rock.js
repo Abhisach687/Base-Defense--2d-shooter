@@ -1,4 +1,16 @@
+/**
+ * Represents a rock in the game.
+ * @class
+ */
 class Rock {
+  /**
+   * Creates a rock object.
+   * @constructor
+   * @param {number} x - The x-coordinate of the rock's center.
+   * @param {number} y - The y-coordinate of the rock's center.
+   * @param {number} radius - The radius of the rock.
+   * @param {string} color - The color of the rock.
+   */
   constructor(x, y, radius, color) {
     this.x = x;
     this.y = y;
@@ -8,6 +20,10 @@ class Rock {
     this.points = this.generatePoints();
   }
 
+  /**
+   * Generates random points around the rock's center.
+   * @returns {Array} - An array of points.
+   */
   generatePoints() {
     const points = [];
     for (let i = 0; i < 360; i += Math.random() * 30) {
@@ -19,6 +35,9 @@ class Rock {
     return points;
   }
 
+  /**
+   * Draws the rock on the canvas.
+   */
   draw() {
     c.beginPath();
     for (let i = 0; i < this.points.length; i++) {
@@ -34,10 +53,16 @@ class Rock {
     c.fill();
   }
 
+  /**
+   * Updates the rock's position and appearance.
+   */
   update() {
     this.draw();
   }
 
+  /**
+   * Handles a hit on the rock.
+   */
   hit() {
     this.hits++;
     if (this.hits >= 3) {

@@ -3,6 +3,14 @@ function resizeCanvas() {
   canvas.height = window.innerHeight;
 }
 
+/**
+ * Creates a score label element and animates it.
+ * @param {Object} options - The options for creating the score label.
+ * @param {Object} options.position - The position of the score label.
+ * @param {number} options.position.x - The x-coordinate of the score label.
+ * @param {number} options.position.y - The y-coordinate of the score label.
+ * @param {number} options.score - The score to be displayed in the label.
+ */
 function createScoreLabel({ position, score }) {
   const scoreLabel = document.createElement("label");
   scoreLabel.innerHTML = score;

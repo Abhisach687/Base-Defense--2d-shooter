@@ -1,3 +1,6 @@
+/**
+ * Initializes the game by setting up the initial state and objects.
+ */
 function init() {
   player = new Player(x, y, 10, "white");
   projectiles = [];
