@@ -28,8 +28,9 @@ class Rock {
     const points = [];
     for (let i = 0; i < 360; i += Math.random() * 30) {
       const r = this.radius + Math.random() * this.radius;
-      const x = this.x + r * Math.cos(i);
-      const y = this.y + r * Math.sin(i);
+      const rad = (i * Math.PI) / 180; // Convert angle to radians
+      const x = this.x + r * Math.cos(rad);
+      const y = this.y + r * Math.sin(rad);
       points.push({ x, y });
     }
     return points;
