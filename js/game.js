@@ -408,7 +408,7 @@ addEventListener("mousemove", (event) => {
   mouse.position.y = event.clientY;
 });
 
-// Event listener for start button click
+// Event listener for restart button click
 buttonEl.addEventListener("click", () => {
   audio.select.play();
   init();
